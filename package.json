@@ -1,7 +1,7 @@
 {
   "name": "hubot-vmfarms",
-  "description": "A hubot script to interact with VMFarms API",
-  "version": "0.0.0",
+  "description": "A hubot script to interact with the VMFarms API",
+  "version": "0.0.1-alpha.1",
   "author": "Michael Warkentin <mwarkentin@gmail.com>",
   "license": "MIT",
 
