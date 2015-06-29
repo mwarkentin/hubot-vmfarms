@@ -12,8 +12,11 @@ describe 'vmfarms', ->
 
     require('../src/vmfarms')(@robot)
 
-  it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/hello/)
+  it 'registers a respond listener for the server api', ->
+    expect(@robot.respond).to.have.been.calledWith(/vmf(arms)? server me\s?([\w-]+)?/i)
 
-  it 'registers a hear listener', ->
-    expect(@robot.hear).to.have.been.calledWith(/orly/)
+  it 'registers a respond listener for the pricing page', ->
+    expect(@robot.respond).to.have.been.calledWith(/vmf(arms)? price me/i)
+
+  it 'registers a respond listener for the monitoring api', ->
+    expect(@robot.respond).to.have.been.calledWith(/vmf(arms)? pause monitoring (\d+)/i)
