@@ -17,6 +17,8 @@
   },
 
   "dependencies": {
+    "ascii-table": "^0.0.8",
+    "cheerio": "^0.18.0"
   },
 
   "peerDependencies": {
