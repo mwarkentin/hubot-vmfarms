@@ -39,6 +39,7 @@ module.exports = (robot) ->
           if server.private_interfaces.length > 1
             private_ips += ', ...'
 
+          # if no filter defined or the filter is found in the server name
           if msg.match[2] is undefined or server.name.indexOf(msg.match[2]) > -1
             table.addRow(server.name, public_ips, private_ips, server.virtual_cores, server.package)
       catch error
