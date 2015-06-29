@@ -48,11 +48,15 @@ module.exports = (robot) ->
       msg.send "/code #{table.toString()}"
 
   robot.respond /vmf(arms)? pause monitoring (\d+)/i, (msg) ->
-    data = JSON.stringify(pause_time: parseInt(msg.match[2], 10))
-    msg.send "url: #{urlMonitoring}"
-    msg.send "data: #{data}"
-    msg.http(urlMonitoring).headers(Authorization: auth).post(data) (err, res, body) ->
-      msg.send err, res, body
+    pauseMinutes = parseInt(msg.match[2], 10)
+    data = "pause_time=#{pauseMinutes}"
+    msg.http(urlMonitoring).headers('Authorization': auth, 'Content-Type': 'application/x-www-form-urlencoded').post(data) (err, res, body) ->
+      if res.statusCode == 200
+        msg.send "Ok, VMFarms monitoring is paused for #{pauseMinutes} minutes. You can enable it again here: https://my.vmfarms.com/monitors/"
+      else if res.statusCode == 404
+        msg.send "You can only pause monitoring for the following number of minutes: 15, 30, 60, 120"
+      else
+        msg.send "#{res.statusCode} error", body
 
   robot.respond /vmf(arms)? price me/i, (msg) ->
     table = new AsciiTable()
@@ -65,5 +69,5 @@ module.exports = (robot) ->
           table.addRow $(elem).find('div').map (i, elem) ->
             return $(elem).text()
           .get()
-          # table.addRow cells.text()
+
       msg.send "/code #{table.toString()}"
