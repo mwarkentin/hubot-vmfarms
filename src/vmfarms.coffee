@@ -35,19 +35,19 @@ module.exports = (robot) ->
         catch error
           msg.send(error, body, "Bleep bloop. Couldn't parse the JSON response.")
 
-          for server in json.results
-            public_ips = server.public_interfaces[0]
-            if server.public_interfaces.length > 1
-              public_ips += ', ...'
-            private_ips = server.private_interfaces[0]
-            if server.private_interfaces.length > 1
-              private_ips += ', ...'
+        for server in json.results
+          public_ips = server.public_interfaces[0]
+          if server.public_interfaces.length > 1
+            public_ips += ', ...'
+          private_ips = server.private_interfaces[0]
+          if server.private_interfaces.length > 1
+            private_ips += ', ...'
 
-            # if no filter defined or the filter is found in the server name
-            if msg.match[2] is undefined or server.name.indexOf(msg.match[2]) > -1
-              table.addRow(server.name, public_ips, private_ips, server.virtual_cores, server.package)
-          table.sortColumn(0, (a, b) -> a.localeCompare(b))
-          msg.send "/code #{table.toString()}"
+          # if no filter defined or the filter is found in the server name
+          if msg.match[2] is undefined or server.name.indexOf(msg.match[2]) > -1
+            table.addRow(server.name, public_ips, private_ips, server.virtual_cores, server.package)
+        table.sortColumn(0, (a, b) -> a.localeCompare(b))
+        msg.send "/code #{table.toString()}"
       else
         msg.send "#{res.statusCode} error", body
 
