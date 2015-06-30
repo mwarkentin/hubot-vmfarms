@@ -1,13 +1,13 @@
 # Description
-#   A hubot script to interact with VMFarms API
+#   A hubot script to interact with VM Farms API
 #
 # Configuration:
-#   HUBOT_VMF_API_TOKEN - VMFarms API token
+#   HUBOT_VMF_API_TOKEN - VM Farms API token
 #
 # Commands:
-#   hubot vmf(arms) pause monitoring <15|30|60|120> - Pause VMF external monitoring for specified number of minutes
-#   hubot vmf(arms) price me - Get a list of prices and configurations for VMFarms standard boxes
-#   hubot vmf(arms) server me [filter term] - Get a list of VMFarms servers, with an optional filter
+#   hubot vmf(arms) pause monitoring <15|30|60|120> - Pause VM Farms external monitoring for specified number of minutes
+#   hubot vmf(arms) price me - Get a list of prices and configurations for VM Farms standard boxes
+#   hubot vmf(arms) server me [filter term] - Get a list of VM Farms servers, with an optional filter
 #
 # Dependencies:
 #   "ascii-table": "0.0.8"
@@ -56,7 +56,7 @@ module.exports = (robot) ->
     data = "pause_time=#{pauseMinutes}"
     msg.http(urlMonitoring).headers('Authorization': auth, 'Content-Type': 'application/x-www-form-urlencoded').post(data) (err, res, body) ->
       if res.statusCode == 200
-        msg.send "Ok, VMFarms monitoring is paused for #{pauseMinutes} minutes. You can enable it again here: https://my.vmfarms.com/monitors/"
+        msg.send "Ok, VM Farms monitoring is paused for #{pauseMinutes} minutes. You can enable it again here: https://my.vmfarms.com/monitors/"
       else if res.statusCode == 404
         msg.send "You can only pause monitoring for the following number of minutes: 15, 30, 60, 120"
       else

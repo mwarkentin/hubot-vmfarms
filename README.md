@@ -1,6 +1,6 @@
 # hubot-vmfarms
 
-A hubot script to interact with the VMFarms API
+A hubot script to interact with the VM Farms API
 
 See [`src/vmfarms.coffee`](src/vmfarms.coffee) for full documentation.
 
@@ -52,5 +52,5 @@ hubot>> .-----------------------------------------------------------------------
 
 ```
 user1>> hubot vmf pause monitoring 15
-hubot>> Ok, VMFarms monitoring is paused for 15 minutes. You can enable it again here: https://my.vmfarms.com/monitors/
+hubot>> Ok, VM Farms monitoring is paused for 15 minutes. You can enable it again here: https://my.vmfarms.com/monitors/
 ```
