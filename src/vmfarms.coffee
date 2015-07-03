@@ -19,6 +19,7 @@
 AsciiTable = require 'ascii-table'
 cheerio = require 'cheerio'
 
+urlModules = "https://vmfarms.com/our-platform/"
 urlMonitoring = "https://my.vmfarms.com/monitors/api/pause-monitors/"
 urlPrices = "https://vmfarms.com/pricing/"
 urlServers = "https://my.vmfarms.com/cloud/api/servers/"
@@ -69,6 +70,21 @@ module.exports = (robot) ->
     msg.http(urlPrices).get() (err, res, body) ->
       $ = cheerio.load body
       $('.section-four .tablecontainerrow').each (i, elem) ->
+        if i != 0
+          table.addRow $(elem).find('div').map (i, elem) ->
+            return $(elem).text()
+          .get()
+
+      msg.send "/code #{table.toString()}"
+
+  robot.respond /vmf(arms)? price me/i, (msg) ->
+    msg.http(urlModules).get() (err, res, body) ->
+      $ = cheerio.load body
+
+      table = new AsciiTable()
+      table.setHeading('Technology', 'Web Server', 'Package Management', 'Support')
+
+      $('.section-four .tablecontainer')[0].find('.tablecontainerrow').each (i, elem) ->
         if i != 0
           table.addRow $(elem).find('div').map (i, elem) ->
             return $(elem).text()
