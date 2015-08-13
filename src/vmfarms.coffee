@@ -26,8 +26,12 @@ auth = "Token #{process.env.HUBOT_VMF_API_TOKEN}"
 
 module.exports = (robot) ->
   robot.respond /vmf(arms)? server me\s?([\w-]+)?/i, (msg) ->
+    servers = []
+    completed_requests = 0
+
     table = new AsciiTable()
-    table.setHeading('Name', 'Public IPs', 'Private IPs', '# CPUs', 'Package')
+    table.setHeading('Name', 'Public IPs', 'Private IPs', '# CPUs', 'Disk', 'Package')
+
     msg.http(urlServers).headers(Authorization: auth, Accept: 'application/json').get() (err, res, body) ->
       if res.statusCode == 200
         try
@@ -35,21 +39,38 @@ module.exports = (robot) ->
         catch error
           msg.send(error, body, "Bleep bloop. Couldn't parse the JSON response.")
 
-        for server in json.results
-          public_ips = server.public_interfaces[0]
-          if server.public_interfaces.length > 1
-            public_ips += ', ...'
-          private_ips = server.private_interfaces[0]
-          if server.private_interfaces.length > 1
-            private_ips += ', ...'
+        numPages = Math.ceil json.count / 100
+        urlsServers = [1..numPages].map (num) -> "https://my.vmfarms.com/cloud/api/servers/?page=#{num}"
+        
+        for url in urlsServers
+          msg.http(url).headers(Authorization: auth, Accept: 'application/json').get() (err, res, body) ->
+            if res.statusCode == 200
+              try
+                json = JSON.parse(body)
+              catch error
+                msg.send(error, body, "Bleep bloop. Couldn't parse the JSON response.")
 
-          # if no filter defined or the filter is found in the server name
-          if msg.match[2] is undefined or server.name.indexOf(msg.match[2]) > -1
-            table.addRow(server.name, public_ips, private_ips, server.virtual_cores, server.package)
-        table.sortColumn(0, (a, b) -> a.localeCompare(b))
-        msg.send "/code #{table.toString()}"
+              servers = servers.concat json.results
+              completed_requests++
+
+              if completed_requests == urlsServers.length
+                for server in servers
+                  public_ips = server.public_interfaces[0]
+                  if server.public_interfaces.length > 1
+                    public_ips += ', ...'
+                  private_ips = server.private_interfaces[0]
+                  if server.private_interfaces.length > 1
+                    private_ips += ', ...'
+
+                  # if no filter defined or the filter is found in the server name
+                  if msg.match[2] is undefined or server.name.indexOf(msg.match[2]) > -1
+                    table.addRow(server.name, public_ips, private_ips, server.virtual_cores, "#{server.virtual_drive_size}GB", server.package)
+                table.sortColumn(0, (a, b) -> a.localeCompare(b))
+                msg.send "/code #{table.__rows.length} servers:\n\n#{table.toString()}"
+            else
+              msg.send "#{res.statusCode} error", body
       else
-        msg.send "#{res.statusCode} error", body
+          msg.send "#{res.statusCode} error", body
 
   robot.respond /vmf(arms)? pause monitoring (\d+)/i, (msg) ->
     pauseMinutes = parseInt(msg.match[2], 10)
@@ -65,6 +86,7 @@ module.exports = (robot) ->
   robot.respond /vmf(arms)? price me/i, (msg) ->
     table = new AsciiTable()
     table.setHeading('VM Type', 'Memory', 'Disk', 'CPU', 'Price', 'Extra Disk')
+    table.addRow(['512MB VM', '512MB', '50GB', '2 CPUs', '$51/mo', '$3.00/GB'])
 
     msg.http(urlPrices).get() (err, res, body) ->
       $ = cheerio.load body
