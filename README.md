@@ -54,3 +54,15 @@ hubot>> .-----------------------------------------------------------------------
 user1>> hubot vmf pause monitoring 15
 hubot>> Ok, VM Farms monitoring is paused for 15 minutes. You can enable it again here: https://my.vmfarms.com/monitors/
 ```
+
+## History
+
+### 1.1.0 / 2015-08-13
+
+  * Fix: Use pagination to get full list of servers, in case you have >100 servers
+  * New: Add server count to response
+  * New: Add `512MB` to price list
+
+### 1.0.0 / 2015-06-30
+
+  * Initial release
