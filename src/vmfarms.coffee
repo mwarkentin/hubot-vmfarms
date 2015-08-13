@@ -86,6 +86,7 @@ module.exports = (robot) ->
   robot.respond /vmf(arms)? price me/i, (msg) ->
     table = new AsciiTable()
     table.setHeading('VM Type', 'Memory', 'Disk', 'CPU', 'Price', 'Extra Disk')
+    table.addRow(['512MB VM', '512MB', '50GB', '2 CPUs', '$51/mo', '$3.00/GB'])
 
     msg.http(urlPrices).get() (err, res, body) ->
       $ = cheerio.load body
