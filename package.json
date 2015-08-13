@@ -9,11 +9,11 @@
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-vmfarms.git"
+    "url": "git://github.com/mwarkentin/hubot-vmfarms.git"
   },
 
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-vmfarms/issues"
+    "url": "https://github.com/mwarkentin/hubot-vmfarms/issues"
   },
 
   "dependencies": {
