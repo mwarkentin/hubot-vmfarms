@@ -66,7 +66,7 @@ module.exports = (robot) ->
                   if msg.match[2] is undefined or server.name.indexOf(msg.match[2]) > -1
                     table.addRow(server.name, public_ips, private_ips, server.virtual_cores, "#{server.virtual_drive_size}GB", server.package)
                 table.sortColumn(0, (a, b) -> a.localeCompare(b))
-                msg.send "/code #{table.toString()}"
+                msg.send "/code #{table.__rows.length} servers:\n\n#{table.toString()}"
             else
               msg.send "#{res.statusCode} error", body
       else
