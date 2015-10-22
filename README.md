@@ -1,6 +1,6 @@
 # hubot-vmfarms
 
-A hubot script to interact with the VM Farms API
+A hubot script to interact with the [VM Farms API](https://my.vmfarms.com/api/v1/docs/)
 
 See [`src/vmfarms.coffee`](src/vmfarms.coffee) for full documentation.
 
