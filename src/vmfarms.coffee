@@ -76,7 +76,7 @@ module.exports = (robot) ->
     pauseMinutes = parseInt(msg.match[2], 10)
     data = "pause_duration=#{pauseMinutes}"
     msg.http(urlMonitoring).headers('Authorization': auth, 'Content-Type': 'application/x-www-form-urlencoded').post(data) (err, res, body) ->
-      if res.statusCode == 200
+      if res.statusCode == 201
         msg.send "Ok, VM Farms monitoring is paused for #{pauseMinutes} minutes. You can enable it again here: https://my.vmfarms.com/monitors/"
       else if res.statusCode == 404
         msg.send "You can only pause monitoring for the following number of minutes: 15, 30, 60, 120"
