@@ -57,6 +57,10 @@ hubot>> Ok, VM Farms monitoring is paused for 15 minutes. You can enable it agai
 
 ## History
 
+### 1.1.2 / 2015-10-22
+
+  * Fix: Fix pause duration parameter
+
 ### 1.1.1 / 2015-08-13
 
   * Fix: Fix URLs in `package.json` to point to correct github repo
