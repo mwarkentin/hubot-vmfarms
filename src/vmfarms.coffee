@@ -41,7 +41,7 @@ module.exports = (robot) ->
 
         numPages = Math.ceil json.count / 100
         urlsServers = [1..numPages].map (num) -> "https://my.vmfarms.com/cloud/api/servers/?page=#{num}"
-        
+
         for url in urlsServers
           msg.http(url).headers(Authorization: auth, Accept: 'application/json').get() (err, res, body) ->
             if res.statusCode == 200
@@ -74,7 +74,7 @@ module.exports = (robot) ->
 
   robot.respond /vmf(arms)? pause monitoring (\d+)/i, (msg) ->
     pauseMinutes = parseInt(msg.match[2], 10)
-    data = "pause_time=#{pauseMinutes}"
+    data = "pause_duration=#{pauseMinutes}"
     msg.http(urlMonitoring).headers('Authorization': auth, 'Content-Type': 'application/x-www-form-urlencoded').post(data) (err, res, body) ->
       if res.statusCode == 200
         msg.send "Ok, VM Farms monitoring is paused for #{pauseMinutes} minutes. You can enable it again here: https://my.vmfarms.com/monitors/"
