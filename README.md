@@ -4,6 +4,10 @@ A hubot script to interact with the [VM Farms API](https://my.vmfarms.com/api/v1
 
 See [`src/vmfarms.coffee`](src/vmfarms.coffee) for full documentation.
 
+# No longer maintained
+
+This repo is no longer maintained - if someone is interested in taking it over, open an issue to let me know.
+
 ## Installation
 
 In hubot project repo, run:
